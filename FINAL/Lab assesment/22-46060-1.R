@@ -1,14 +1,6 @@
 library(ggplot2)
-
-
 titanic <- read.csv("E:\\Academics\\DATA SCIENCE\\FINAL\\Lab assesment\\titanic.csv")
-
 titanic_clean <- na.omit(titanic)
-
-titanic_clean$Sex <- as.factor(titanic_clean$Sex)
-titanic_clean$Pclass <- as.factor(titanic_clean$Pclass)
-titanic_clean$Embarked <- as.factor(titanic_clean$Embarked)
-titanic_clean$Survived <- as.factor(titanic_clean$Survived)
 
 # 1. Pearson's correlation between Age and Fare
 pearson_corr <- cor(titanic_clean$Age, titanic_clean$Fare, method = "pearson")
