@@ -8,11 +8,37 @@ library(grid)
 library(gridBase)  
 library(png)
 
-data <- read.csv("D:\\Academics\\DATA SCIENCE\\FINAL\\Lab assesment 2\\titanic.csv")
+data <- read.csv("path\\titanic.csv")
 
 data <- data %>%
   select(Survived, Pclass, Sex, Age, SibSp, Parch, Fare) %>%
   na.omit()
+
+histogram_plot <- ggplot(data, aes(x = Age)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+  labs(title = "Histogram: Age Distribution", x = "Age", y = "Count") +
+  theme_minimal()
+show(histogram_plot)
+
+bar_plot <- ggplot(data, aes(x = Sex)) +
+  geom_bar(fill = "coral") +
+  labs(title = "Bar Plot: Gender Count", x = "Sex", y = "Count") +
+  theme_minimal()
+show(bar_plot)
+
+box_plot <- ggplot(data, aes(y = SibSp)) +
+  geom_boxplot(fill = "lightgreen", color = "red") +
+  labs(title = "Box: Siblings/Spouses Aboard", y = "SibSp") +
+  theme_minimal()
+show(box_plot)
+
+grid.arrange(
+  histogram_plot, bar_plot, box_plot,
+  ncol = 3,
+  top = textGrob("Titanic Dataset Univariate Visualization",
+                 gp = gpar(fontface = "bold", fontsize = 16))
+)
+
 
 scatter_plot <- ggplot(data, aes(x = Age, y = Fare, color = factor(Survived))) +
   geom_point() +
@@ -49,7 +75,7 @@ radar_data <- data %>%
 radar_df <- rbind(rep(1,4), rep(0,4), radar_data)
 colnames(radar_df) <- c("Age", "SibSp", "Parch", "Fare")
 
-png("D:\\Academics\\DATA SCIENCE\\FINAL\\Lab assesment 2\\radar_chart.png", width = 500, height = 500)
+png("path\\radar_chart.png", width = 500, height = 500)
 fmsb::radarchart(radar_df,
                  axistype = 1,
                  pcol = "darkred",
@@ -61,12 +87,11 @@ fmsb::radarchart(radar_df,
                  title = "Radar: Normalized Features")
 dev.off()
 
-radar_img <- readPNG("D:\\Academics\\DATA SCIENCE\\FINAL\\Lab assesment 2\\radar_chart.png")
+radar_img <- readPNG("path\\radar_chart.png")
 radar_grob <- rasterGrob(radar_img, interpolate = TRUE)
 
 grid.arrange(
-  scatter_plot, violin_plot,
-  line_plot, radar_grob,
+  scatter_plot, violin_plot, line_plot, radar_grob,
   ncol = 2,
   top = textGrob("Titanic Dataset Multivariate Visualization",
                  gp = gpar(fontface = "bold", fontsize = 16))
